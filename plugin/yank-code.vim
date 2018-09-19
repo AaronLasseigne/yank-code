@@ -1,9 +1,12 @@
 function! s:go(start_line, end_line) abort
   let indent = 10000
   for line_num in range(a:start_line, a:end_line)
-    let leading_spaces = matchend(getline(line_num), '^ *')
-    if leading_spaces < indent
-      let indent = leading_spaces
+    let line = getline(line_num)
+    if line !~ '^\s*$'
+      let leading_spaces = matchend(line, '^ *')
+      if leading_spaces < indent
+        let indent = leading_spaces
+      endif
     endif
   endfor
 
