@@ -17,7 +17,7 @@ function! s:go(start_line, end_line) abort
   else
     let line_note = '(lines '.a:start_line.'-'.a:end_line.')'
   endif
-  call add(code, printf(&commentstring, ' '.@%.' '.line_note))
+  call add(code, printf(&commentstring, @%.' '.line_note))
 
   let max_line_num_len = strlen(a:end_line)
   for line_num in range(a:start_line, a:end_line)
