@@ -11,13 +11,15 @@ function! s:go(start_line, end_line) abort
   endfor
 
   let code = []
-  let line_note = ''
-  if a:start_line == a:end_line
-    let line_note = '(line '.a:start_line.')'
-  else
-    let line_note = '(lines '.a:start_line.'-'.a:end_line.')'
+  if &commentstring =~ '%s'
+    let line_note = ''
+    if a:start_line == a:end_line
+      let line_note = '(line '.a:start_line.')'
+    else
+      let line_note = '(lines '.a:start_line.'-'.a:end_line.')'
+    endif
+    call add(code, printf(&commentstring, @%.' '.line_note))
   endif
-  call add(code, printf(&commentstring, @%.' '.line_note))
 
   let max_line_num_len = strlen(a:end_line)
   for line_num in range(a:start_line, a:end_line)
