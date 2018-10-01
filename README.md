@@ -30,7 +30,7 @@ def valid?(*)
 end
 ```
 
-Now you're ready to paste it into Slack or whereever you need!
+Now you're ready to paste it into Slack or wherever you need!
 
 ## Installation
 
@@ -47,8 +47,10 @@ Visually select an area and then call `:YankCode`.
 You can also map it:
 
 ```vim
-vmap <leader>y :YankCode<CR>
+map <leader>y <plug>YankCode
 ```
+
+The mapping will work in normal and visual modes, e.g. `<leader>yip` or `vip<leader>y` to yank a paragraph.
 
 YankCode is licensed under [the MIT License][].
 
