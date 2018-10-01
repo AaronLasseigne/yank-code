@@ -1,6 +1,15 @@
-function! s:go(start_line, end_line) abort
+function! s:go(...) abort
+  if !a:0
+    let &operatorfunc = matchstr(expand('<sfile>'), '[^. ]*$')
+    return 'g@'
+  elseif a:0 > 1
+    let [start_line, end_line] = [a:1, a:2]
+  else
+    let [start_line, end_line] = [line("'["), line("']")]
+  endif
+
   let indent = 10000
-  for line_num in range(a:start_line, a:end_line)
+  for line_num in range(start_line, end_line)
     let line = getline(line_num)
     if line !~ '^\s*$'
       let leading_spaces = matchend(line, '^ *')
@@ -13,16 +22,16 @@ function! s:go(start_line, end_line) abort
   let code = []
   if &commentstring =~ '%s'
     let line_note = ''
-    if a:start_line == a:end_line
-      let line_note = '(line '.a:start_line.')'
+    if start_line == end_line
+      let line_note = '(line '.start_line.')'
     else
-      let line_note = '(lines '.a:start_line.'-'.a:end_line.')'
+      let line_note = '(lines '.start_line.'-'.end_line.')'
     endif
     call add(code, printf(&commentstring, @%.' '.line_note))
   endif
 
-  let max_line_num_len = strlen(a:end_line)
-  for line_num in range(a:start_line, a:end_line)
+  let max_line_num_len = strlen(end_line)
+  for line_num in range(start_line, end_line)
     let unindented_code = strcharpart(getline(line_num), indent)
     call add(code, unindented_code)
   endfor
@@ -31,3 +40,5 @@ function! s:go(start_line, end_line) abort
 endfunction
 
 command! -range -bar YankCode call s:go(<line1>, <line2>)
+vnoremap <expr> <plug>YankCode <sid>go()
+nnoremap <expr> <plug>YankCode <sid>go()
