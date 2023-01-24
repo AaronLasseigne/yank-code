@@ -20,7 +20,7 @@ Instead of yanking:
 You'll get:
 
 ```ruby
-#  lib/active_interaction/concerns/runnable.rb (lines 48-54)
+# lib/active_interaction/concerns/runnable.rb (lines 48-54)
 def valid?(*)
   if instance_variable_defined?(:@_interaction_valid)
     return @_interaction_valid
