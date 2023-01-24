@@ -27,7 +27,8 @@ function! s:go(...) abort
     else
       let line_note = '(lines '.start_line.'-'.end_line.')'
     endif
-    call add(code, printf(&commentstring, @%.' '.line_note))
+    let escaped_commentstring = substitute(&commentstring, '%\([^s]|$\)', '%%\1', 'g')
+    call add(code, printf(escaped_commentstring, @%.' '.line_note))
   endif
 
   let max_line_num_len = strlen(end_line)
