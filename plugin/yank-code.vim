@@ -20,16 +20,16 @@ function! s:go(...) abort
   endfor
 
   let code = []
-  if &commentstring =~ '%s'
-    let line_note = ''
-    if start_line == end_line
-      let line_note = '(line '.start_line.')'
-    else
-      let line_note = '(lines '.start_line.'-'.end_line.')'
-    endif
-    let escaped_commentstring = substitute(substitute(&commentstring, '%\([^s]\|$\)', '%%\1', 'g'), '\(\S\)%s', '\1 %s', '')
-    call add(code, printf(escaped_commentstring, @%.' '.line_note))
+  let cms = &commentstring =~ '%s' ? &cms : '%s'
+
+  let line_note = ''
+  if start_line == end_line
+    let line_note = '(line '.start_line.')'
+  else
+    let line_note = '(lines '.start_line.'-'.end_line.')'
   endif
+  let escaped_commentstring = substitute(substitute(cms, '%\([^s]\|$\)', '%%\1', 'g'), '\(\S\)%s', '\1 %s', '')
+  call add(code, printf(escaped_commentstring, @%.' '.line_note))
 
   let max_line_num_len = strlen(end_line)
   for line_num in range(start_line, end_line)
